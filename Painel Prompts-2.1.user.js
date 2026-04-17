@@ -1,12 +1,15 @@
 // ==UserScript==
 // @name         Painel Prompts
 // @namespace    http://tampermonkey.net/
-// @version      2.2
+// @version      2.1
 // @description  Painel multifuncional de prompts com visual escuro, gradiente, Auto-Enter, gerador SEO, interface móvel e imagens fixas em 1200x1200.
 // @author       maycon
 // @match        https://gemini.google.com/*
 // @match        https://chatgpt.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
+// @updateURL    https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/Painel%20Prompts-2.1.user.js
+// @downloadURL  https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/Painel%20Prompts-2.1.user.js
+// @grant        none
 // @run-at       document-idle
 // @grant        none
 // ==/UserScript==
@@ -276,7 +279,7 @@
                 } else if (tipo === '2') {
                     promptText = `Gere 1 única imagem realista de alta qualidade para e-commerce, mostrando uma pessoa utilizando o ${produto} de forma natural em um ambiente cotidiano. O produto deve manter 100% fidelidade ao original, sem qualquer alteração de cor, formato, textura ou proporções. A cena deve transmitir conforto e uso real, com a pessoa em postura natural, em um ambiente coerente e bem organizado. Utilize iluminação suave e realista, com aparência de fotografia profissional, mantendo o produto como elemento principal e bem destacado na composição. Dimensões exatas: 1200x1200 pixels.`;
                 } else if (tipo === '3') {
-                    promptText = `Crie uma foto mostrando os benefícios detalhados com estas informações: \n${specs}\n\nDimensões exatas: 1200x1200 pixels.`;
+                    promptText = `Gere um layout publicitário premium e fotorrealista de e-commerce apresentando o produto: ${produto}. **Apresentação e Cores:** O produto deve ser o grande destaque em um ambiente contextual elegante e minimalista. A iluminação e a paleta de cores dos elementos gráficos (caixas de texto, ícones, linhas) devem harmonizar perfeitamente com as cores principais do produto e do cenário, criando uma estética coesa, sofisticada e profissional. **Filtro Inteligente de Benefícios:** Atue como um especialista em conversão e analise estas especificações: [${specs}]. Selecione APENAS os 3 ou 4 benefícios mais impactantes e cruciais para a decisão de compra do cliente. Ignore detalhes técnicos irrelevantes. **Design Limpo (Sem Poluição):** Posicione esses 5 ou 7 benefícios ao redor do produto usando textos curtíssimos e diretos (máximo absoluto de 3 a 4 palavras por benefício), acompanhados de ícones modernos e discretos. Coloque os textos em pequenos cartões flutuantes elegantes (ex: estilo translúcido ou flat minimalista). É ESTRITAMENTE PROIBIDO usar blocos de texto longos, parágrafos ou poluir a imagem visualmente. O design deve ser limpo, respirável e altamente atrativo. Dimensões exatas: 1200x1200 pixels.`;
                 } else if (tipo === '4') {
                     promptText = `Gere um gráfico de comparação de marketing profissional e de alta resolução. A composição e o estilo devem corresponder à estrutura, layout, tipografia e esquema de cores da imagem anexada (image_0.png), usando tipografia limpa e sem serifa.\n\n**Layout Geral e Cores:**\nO gráfico é dividido em dois painéis verticais distintos com cantos arredondados. O fundo é dividido horizontalmente: a seção superior é um marrom-avermelhado profundo e rico com detalhes em linhas curvas claras no canto superior direito. A seção inferior é branca e limpa.\n\n**Cabeçalhos Superiores:**\n- Cabeçalho Esquerdo: '${produto}' em uma fonte branca e limpa.\n- Cabeçalho Direito: 'Marcas Simples' em uma fonte branca e limpa.\n\n**Painéis Centrais de Exibição de Imagens:**\n- **Painel de Imagem Esquerdo (Nosso Produto):** Crie uma renderização de produto limpa e fotorrealista de uma versão premium do ${produto}. Ele deve ser colocado em um ambiente doméstico ou comercial sofisticado e bem iluminado.\n- **Painel de Imagem Direito (Alternativa Inferior):** Crie uma renderização de produto limpa e fotorrealista de uma versão genérica e inferior do mesmo tipo de produto. Coloque-o em um ambiente mais simples com iluminação mais plana.\n\n**Listas de Benefícios Inferiores:**\nAbaixo das imagens, crie duas listas verticais paralelas e limpas com ícones. Use estritamente as especificações abaixo para montar os tópicos:\n\n[ESPECIFICAÇÕES]:\n${specs}\n\n- **Lista Esquerda (Nossos Benefícios):** Precedida por ícones de 'check' verdes. Gere pontos positivos baseados exclusivamente nas [ESPECIFICAÇÕES].\n- **Lista Direita (Pontos Inferiores):** Precedida por ícones de 'X' vermelhos. Gere pontos negativos correspondentes.\n\n**Detalhes Finais:**\nGaranta que a hierarquia visual e o espaçamento sejam idênticos à image_0.png. Texto legível e perfeitamente alinhado. Dimensões exatas: 1200x1200 pixels.`;
                 } else if (tipo === '5') {
