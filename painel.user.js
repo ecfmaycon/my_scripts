@@ -6,6 +6,7 @@
 // @author       maycon
 // @match        https://gemini.google.com/*
 // @match        https://chatgpt.com/*
+// @match        https://chatdeepseek.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @updateURL    https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/painel.user.js
 // @downloadURL  https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/painel.user.js
