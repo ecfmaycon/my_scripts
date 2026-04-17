@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Painel Prompts
 // @namespace    http://tampermonkey.net/
-// @version      2.5
+// @version      2.6
 // @description  Painel multifuncional de prompts com visual escuro, gradiente, Auto-Enter, gerador SEO, interface móvel e imagens fixas em 1200x1200.
 // @author       maycon
 // @match        https://gemini.google.com/*
 // @match        https://chatgpt.com/*
+// @match        https://chatdeepseek.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @updateURL    https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/painel.user.js
 // @downloadURL  https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/painel.user.js
