@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Painel Prompts
 // @namespace    http://tampermonkey.net/
-// @version      2.0
+// @version      2.5
 // @description  Painel multifuncional de prompts com visual escuro, gradiente, Auto-Enter, gerador SEO, interface móvel e imagens fixas em 1200x1200.
 // @author       maycon
 // @match        https://gemini.google.com/*
