@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Painel Prompts
 // @namespace    http://tampermonkey.net/
-// @version      2.7
+// @version      2.8
 // @description  Painel multifuncional de prompts com visual escuro, gradiente, Auto-Enter, gerador SEO, interface móvel e imagens fixas em 1200x1200.
 // @author       maycon
 // @match        https://gemini.google.com/*
@@ -121,14 +121,14 @@
 
         const radiosImagem = [];
         const opcoesImagem = [
-            {val: '1', texto: ' Produto (Fundo contextual)'},
+            {val: '1', texto: ' Produto ambientado'},
             {val: '2', texto: ' Pessoa utilizando o produto'},
             {val: '3', texto: ' Benefícios c/ especificações'},
             {val: '4', texto: ' Gráfico Comparação'},
             {val: '5', texto: ' Imagem de KIT ambientado'},
-            {val: '6', texto: ' Anúncio Premium c/ Ícones'},
+            {val: '6', texto: ' Design c/ Ícones'},
             {val: '7', texto: ' Layout Curvo c/ Detalhe e Ícones'},
-            {val: '8', texto: ' 📐 Medidas Premium (Grid)'} // <-- NOVA OPÇÃO AQUI
+            {val: '8', texto: ' Medidas do Produto'} 
         ];
 
         opcoesImagem.forEach((op, index) => {
