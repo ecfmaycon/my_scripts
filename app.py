@@ -51,8 +51,8 @@ from supabase import create_client, Client
 # Dica de segurança: em produção, use st.secrets ou variáveis de ambiente
 # em vez de colocar as chaves diretamente no código.
 # =============================================================================
-SUPABASE_URL = "https://hpfbvswqtkoballahnax.supabase.co"   
-SUPABASE_KEY = "sb_publishable_s3un6FYHE0y8rFwxIDqbkQ_t6RZRB8i"
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 # =============================================================================
