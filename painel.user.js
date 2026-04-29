@@ -1,17 +1,16 @@
 // ==UserScript==
 // @name         Painel Prompts
 // @namespace    http://tampermonkey.net/
-// @version      3.0
+// @version      3.1
 // @description  Painel multifuncional de prompts com visual escuro, gradiente, Auto-Enter, gerador SEO, interface móvel e imagens fixas em 1200x1200.
 // @author       maycon
 // @match        https://gemini.google.com/*
-// @match        https://chatgpt.com/*      
+// @match        https://chatgpt.com/* 
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @updateURL    https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/painel.user.js
 // @downloadURL  https://github.com/ecfmaycon/my_scripts/raw/refs/heads/main/painel.user.js
 // @grant        none
 // @run-at       document-idle
-// @grant        none
 // ==/UserScript==
 
 (function() {
@@ -145,22 +144,30 @@
         // CONTEÚDO: ABA SEO
         // ==========================================
         conteudoSEO.appendChild(criarElemento('label', 'display:block; margin-bottom:10px; font-size:13px; font-weight:600; color:#ddd;', 'Modo de Criação SEO:'));
-        const grupoRadiosSEO = criarElemento('div', 'display:flex; gap:15px; margin-bottom:18px; font-size:13px; color:#ccc;');
+        const grupoRadiosSEO = criarElemento('div', 'display:flex; flex-wrap: wrap; gap:10px; margin-bottom:18px; font-size:12px; color:#ccc;');
 
         const labelRadioTitulo = criarElemento('label', 'cursor:pointer; display:flex; align-items:center;');
         const radioTituloSEO = criarElemento('input', 'margin-right:5px;', '', {type: 'radio', name: 'seomodo', value: 'titulo', checked: true});
         labelRadioTitulo.appendChild(radioTituloSEO);
-        labelRadioTitulo.appendChild(document.createTextNode('Gerar Título'));
+        labelRadioTitulo.appendChild(document.createTextNode('Título'));
 
         const labelRadioDesc = criarElemento('label', 'cursor:pointer; display:flex; align-items:center;');
         const radioDescSEO = criarElemento('input', 'margin-right:5px;', '', {type: 'radio', name: 'seomodo', value: 'descricao'});
         labelRadioDesc.appendChild(radioDescSEO);
-        labelRadioDesc.appendChild(document.createTextNode('Gerar Descrição'));
+        labelRadioDesc.appendChild(document.createTextNode('Descrição'));
+
+        // NOVA OPÇÃO: ANÚNCIO COMPLETO
+        const labelRadioAnuncio = criarElemento('label', 'cursor:pointer; display:flex; align-items:center;');
+        const radioAnuncioSEO = criarElemento('input', 'margin-right:5px;', '', {type: 'radio', name: 'seomodo', value: 'anuncio'});
+        labelRadioAnuncio.appendChild(radioAnuncioSEO);
+        labelRadioAnuncio.appendChild(document.createTextNode('Anúncio Completo'));
 
         grupoRadiosSEO.appendChild(labelRadioTitulo);
         grupoRadiosSEO.appendChild(labelRadioDesc);
+        grupoRadiosSEO.appendChild(labelRadioAnuncio);
         conteudoSEO.appendChild(grupoRadiosSEO);
 
+        // --- CAMPOS PARA TÍTULO E DESCRIÇÃO (ANTIGOS) ---
         const grupoProdutoSEO = criarElemento('div');
         const labelProdutoSEO = criarElemento('label', 'display:block; margin-bottom:5px; font-size:13px; font-weight:600; color:#ddd;', 'Nome do Produto:');
         const inputProdutoSEO = criarElemento('input', 'width:100%; padding:9px; margin-bottom:12px; background:#1c1c24; border:1px solid #333344; color:#fff; border-radius:6px; box-sizing:border-box; font-size:13px; outline:none;', '', {placeholder: 'Ex: Fone Sem Fio'});
@@ -185,6 +192,14 @@
         const inputKeywordsSEO = criarElemento('textarea', 'width:100%; padding:9px; margin-bottom:15px; background:#1c1c24; border:1px solid #333344; color:#fff; border-radius:6px; box-sizing:border-box; resize:none; font-size:13px; outline:none;', '', {rows: '3', placeholder: 'Cole as keywords aqui...'});
         grupoKeywordsSEO.appendChild(inputKeywordsSEO);
         conteudoSEO.appendChild(grupoKeywordsSEO);
+
+        // --- CAMPO ÚNICO PARA "ANÚNCIO COMPLETO" (NOVO) ---
+        const grupoAnuncioCompletoSEO = criarElemento('div', 'display:none;');
+        grupoAnuncioCompletoSEO.appendChild(criarElemento('label', 'display:block; margin-bottom:5px; font-size:13px; font-weight:600; color:#ddd;', 'Nome e Descrição do Produto:'));
+        const inputAnuncioCompletoSEO = criarElemento('textarea', 'width:100%; padding:9px; margin-bottom:15px; background:#1c1c24; border:1px solid #333344; color:#fff; border-radius:6px; box-sizing:border-box; resize:none; font-size:13px; outline:none;', '', {rows: '7', placeholder: 'Cole aqui o nome, a descrição, e especificações gerais do produto...'});
+        grupoAnuncioCompletoSEO.appendChild(inputAnuncioCompletoSEO);
+        conteudoSEO.appendChild(grupoAnuncioCompletoSEO);
+
 
         // --- BOTÃO DE AÇÃO GLOBAL ---
         const btnGerar = criarElemento('button',
@@ -216,14 +231,28 @@
             abaImagem.style.borderBottom = '2px solid transparent';
         });
 
-        [radioTituloSEO, radioDescSEO].forEach(radio => {
+        // Alternador de Abas Internas de SEO
+        [radioTituloSEO, radioDescSEO, radioAnuncioSEO].forEach(radio => {
             radio.addEventListener('change', (e) => {
-                if (e.target.value === 'titulo') {
+                const val = e.target.value;
+                if (val === 'titulo') {
+                    grupoProdutoSEO.style.display = 'block';
+                    grupoSpecsSEO.style.display = 'block';
                     grupoKeywordsSEO.style.display = 'block';
                     grupoLojaSEO.style.display = 'none';
-                } else {
+                    grupoAnuncioCompletoSEO.style.display = 'none';
+                } else if (val === 'descricao') {
+                    grupoProdutoSEO.style.display = 'block';
+                    grupoSpecsSEO.style.display = 'block';
                     grupoKeywordsSEO.style.display = 'none';
                     grupoLojaSEO.style.display = 'block';
+                    grupoAnuncioCompletoSEO.style.display = 'none';
+                } else if (val === 'anuncio') {
+                    grupoProdutoSEO.style.display = 'none';
+                    grupoSpecsSEO.style.display = 'none';
+                    grupoKeywordsSEO.style.display = 'none';
+                    grupoLojaSEO.style.display = 'none';
+                    grupoAnuncioCompletoSEO.style.display = 'block';
                 }
             });
         });
@@ -293,21 +322,107 @@
                 }
 
             } else if (modoAtual === 'seo') {
-                const produtoSEO = inputProdutoSEO.value.trim();
-                const specsSEO = inputSpecsSEO.value.trim();
-                const modoSeo = radioTituloSEO.checked ? 'titulo' : 'descricao';
+                const modoSeo = radioTituloSEO.checked ? 'titulo' : (radioDescSEO.checked ? 'descricao' : 'anuncio');
 
                 if (modoSeo === 'titulo') {
+                    const produtoSEO = inputProdutoSEO.value.trim();
+                    const specsSEO = inputSpecsSEO.value.trim();
                     const keywords = inputKeywordsSEO.value.trim();
                     if (!produtoSEO || !specsSEO || !keywords) return alert("⚠️ Preencha Produto, Especificações e as Keywords.");
 
                     promptText = `Aja como um especialista em SEO para E-commerce. Sua tarefa é criar 3 opções de títulos altamente otimizados para o seguinte produto:\n\nNome Base do Produto: "${produtoSEO}"\n\n**REGRAS CRÍTICAS DE CONSULTORIA SEO QUE VOCÊ DEVE SEGUIR RIGOROSAMENTE:**\n1. **Cruzamento de Dados:** Compare a lista de 'Keywords' com as 'Especificações Técnicas'. Descarte IMEDIATAMENTE qualquer keyword que contradiga as especificações (exemplo: se a especificação diz "Preto" e a keyword diz "Branco", ignore "Branco").\n2. **Limpeza Rígida (Proibido Preposições):** É estritamente PROIBIDO o uso de preposições ou conectivos no título final. NÃO use as palavras: de, para, com, do, da, e, em. Concatene os termos de forma direta.\n3. **Limite de Caracteres:** Cada título gerado DEVE ter um limite MÁXIMO de 60 caracteres. Se passar disso, abrevie ou corte palavras menos importantes.\n\n**ESPECIFICAÇÕES TÉCNICAS REAIS DO PRODUTO:**\n${specsSEO}\n\n**KEYWORDS EXTRAÍDAS (AVANTPRO):**\n${keywords}\n\nForneça APENAS as 3 opções de títulos numeradas. Nenhuma introdução, nem explicação. Apenas os 3 títulos finais.`;
 
                 } else if (modoSeo === 'descricao') {
+                    const produtoSEO = inputProdutoSEO.value.trim();
+                    const specsSEO = inputSpecsSEO.value.trim();
                     const lojaSEO = inputLojaSEO.value.trim();
                     if (!produtoSEO || !specsSEO || !lojaSEO) return alert("⚠️ Preencha Nome do Produto, Loja e Especificações.");
 
                     promptText = `Crie uma descrição de produto seguindo exatamente o modelo abaixo, adaptando com as informações que irei fornecer, respeitando acentos e pontuação:\n\nSeja bem-vindo(a) ${lojaSEO}!\n\nProduto – ${produtoSEO.toUpperCase()}\n\n[Parágrafo 1: Comece com uma introdução que destaque os benefícios e o diferencial principal do produto. Seja atrativo e direto. Ex: Praticidade, conforto, solução para um problema, bem-estar.]\n\n[Parágrafo 2: Explique o uso ideal do produto e como ele atende às necessidades do dia a dia. Pode citar ambientes de uso, públicos ideais ou situações específicas.]\n\nObjetivo simples: [Frase curta e direta dizendo o objetivo do produto. Ex: otimizar o ambiente, trazer conforto, oferecer praticidade.]\n\nITENS INCLUSOS:\n01 ${produtoSEO.toUpperCase()}.\n\nESPECIFICAÇÕES TÉCNICAS:\n[Lista com as principais especificações técnicas: dimensões, materiais, capacidade, cor, voltagem, funcionalidades, peso, compatibilidade, etc.]\n\nCUIDADOS OU RECOMENDAÇÕES:\n[Liste recomendações, cuidados de uso ou armazenamento, forma correta de aplicação, manutenção e avisos de segurança.]\n\n[Parágrafo final com uma frase de fechamento: incentive a compra e destaque o valor do produto na rotina do cliente.]\n\nAgradecemos sua visita e aguardamos sua compra.\n\n📌 Importante: Use uma linguagem amigável, profissional e voltada para o consumidor final. Evite termos técnicos em excesso, a menos que o público exija. Escreva como se fosse um anúncio completo de e-commerce. Sem Emoji, html e nem caracteres especiais.\n\nEspecificações Técnicas:\n${specsSEO}`;
+                
+                } else if (modoSeo === 'anuncio') {
+                    const dadosProduto = inputAnuncioCompletoSEO.value.trim();
+                    if (!dadosProduto) return alert("⚠️ Cole o nome e a descrição do produto na caixa de texto.");
+
+                    promptText = `Atue como um ESPECIALISTA SÊNIOR EM E-COMMERCE, SEO DE MARKETPLACE E COPYWRITING.
+Sua base de conhecimento deve simular o cenário de *Fevereiro de 2026*.
+
+## OBJETIVO
+Eu fornecerei dados técnicos e descritivos de um produto. Sua missão é organizar essas informações e criar um anúncio de alta performance cruzando:
+1. *Inteligência de Mercado* (Tendências 2026).
+2. *SEO Técnico* (Categorização de palavras e Anti-repetição).
+3. *Copywriting Universal* (Descrição pronta para uso em qualquer conta).
+
+---
+
+### 📍 ETAPA 1: RAIO-X DE TENDÊNCIAS (SIMULAÇÃO 2026)
+Simule uma consulta ao *Google Trends* e à aba *Tendências do Mercado Livre* para este nicho.
+1. *O "FEAT" DO MOMENTO:* O que está em alta? (Estética, Cores, Materiais ou termos virais).
+2. *DICA VISUAL (CTR):* Uma recomendação prática para a Foto de Capa se destacar na busca.
+
+---
+
+### 📍 ETAPA 2: A CURADORIA DE PALAVRAS (TOP 5 POR CATEGORIA)
+Classifique as palavras-chave nas 5 categorias estratégicas abaixo, listando apenas os *5 termos mais fortes* de cada uma:
+
+1. *Termos de Alta Tendência:* (Ex: Nome + Estilo do ano/Viral).
+2. *Cabeça de Busca:* (Maior volume histórico e genérico).
+3. *Atributos Técnicos:* (Specs, material, medidas).
+4. *Solução de Dor:* (Termos de como o cliente busca resolver o problema).
+5. *Termos de Conversão:* (Palavras que indicam compra, kit, uso específico).
+
+---
+
+### 📍 ETAPA 3: OS 6 COMBOS DE INDEXAÇÃO (TÍTULO + CAMPO MODELO)
+Gere *6 Opções de Título + Campo Modelo Vinculado*.
+
+*⚠️ REGRA DE OURO (HIERARQUIA DE TÍTULO):*
+O cliente busca primeiro pelo *PRODUTO* e *FUNÇÃO*, não pela marca.
+- *COMECE O TÍTULO POR:* Nome do Produto (O que é) + Público/Uso + Diferencial.
+- *MARCA:* Coloque a marca APENAS no final do título ou escondida no Campo Modelo (a menos que seja uma marca global como Nike/Apple).
+- *EXTENSÃO:* Entre 58-60 caracteres. SEM pontuação. SEM preposições.
+
+*REGRAS DO CAMPO MODELO:*
+- Máximo 115 caracteres. Palavras separadas por vírgula.
+- *ANTI-REPETIÇÃO:* O Campo Modelo NÃO PODE conter palavras que já estão no Título da mesma opção. Use este espaço para a MARCA, SINÔNIMOS e TERMOS DE CAUDA LONGA.
+
+*Apresente assim:*
+*OPÇÃO 1:*
+- Título: [Texto otimizado com foco no produto]
+- Campo Modelo: [Lista de palavras complementares + Marca]
+... (até a Opção 6)
+
+---
+
+### 📍 ETAPA 4: DESCRIÇÃO PERSUASIVA (WHITE LABEL / MULTI-LOJA)
+Escreva uma descrição profissional e acolhedora que sirva para qualquer loja. Não use emojis no corpo do texto. Siga este template:
+
+*Seja muito bem-vindo(a)!*
+(Escreva uma breve introdução institucional genérica focada em: excelência no atendimento, envio rápido e garantia de qualidade, sem citar nome de loja).
+
+*PRODUTO - [NOME DO PRODUTO EM CAIXA ALTA]*
+(Copy focado na Jornada do Cliente: Solução da dor > Benefícios > Sensação de uso. Use os dados fornecidos para destacar diferenciais).
+
+*OBJETIVO SIMPLES:*
+(Resumo da utilidade em uma frase).
+
+*CONTEÚDO DA EMBALAGEM:*
+(Organize os itens fornecidos em bullet points).
+
+*ESPECIFICAÇÕES TÉCNICAS:*
+(Organize os dados técnicos fornecidos: Marca, Modelo, Material, Medidas, Cores, etc).
+
+*CUIDADOS E RECOMENDAÇÕES:*
+(3 a 4 dicas de preservação baseadas no material do produto).
+
+Agradecemos a sua preferência e confiança!
+Atenciosamente, Nossa Equipe.
+
+---
+
+Abaixo estão as informações (nome e descrição) do produto. Por favor, execute o sistema para este produto específico:
+
+${dadosProduto}`;
                 }
             }
 
